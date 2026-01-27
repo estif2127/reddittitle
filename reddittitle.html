@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>😈 Ebony Title Gen</title>
+    <link rel="manifest" href="data:application/manifest+json,{
+        'name': 'Ebony Title Gen',
+        'short_name': 'EbonyGen',
+        'icons': [{'src': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjZmY2YjZiIi8+Cjx0ZXh0IHg9Ijk2IiB5PSIxMDIiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFhMWEyYSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+BiTwvdGV4dD4KPC9zdmc+','sizes': '192x192', 'type': 'image/svg+xml'}],
+        'start_url': '.',
+        'display': 'standalone',
+        'theme_color': '#1a1a1a',
+        'background_color': '#1a1a1a'
+    }">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+            background: #1a1a1a; color: #fff; 
+            padding: 1rem; min-height: 100vh; 
+            display: flex; flex-direction: column; 
+        }
+        h1 { text-align: center; margin-bottom: 1rem; font-size: 1.5rem; }
+        input, button { 
+            padding: 1rem; margin: 0.5rem 0; width: 100%; 
+            border: none; border-radius: 8px; font-size: 1rem; 
+        }
+        input { background: #333; color: #fff; }
+        button { 
+            background: #ff6b6b; color: white; cursor: pointer; 
+            font-weight: bold; min-height: 50px; /* Touch-friendly */
+        }
+        button:hover, button:active { background: #ff5252; }
+        button:disabled { background: #555; cursor: not-allowed; }
+        #api-key-section { background: #222; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; }
+        #results { 
+            margin-top: 1rem; display: flex; flex-direction: column; gap: 1rem; 
+        }
+        .title { 
+            background: #333; padding: 1rem; border-radius: 8px; 
+            border-left: 4px solid #ff6b6b; font-size: 1.1rem; 
+            position: relative; word-break: break-word; 
+        }
+        .title-text {
+            margin-right: 2.5rem; /* Space for copy button */
+        }
+        .copy-btn { 
+            position: absolute; top: 0.5rem; right: 0.5rem; 
+            background: #4caf50; color: white; border: none; 
+            padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; 
+            cursor: pointer; min-width: 40px; min-height: 30px;
+        }
+        .copy-btn:hover { background: #45a049; }
+        .loading { text-align: center; font-style: italic; }
+        .error { color: #ff6b6b; text-align: center; padding: 1rem; background: #333; border-radius: 8px; }
+        @media (max-width: 480px) { 
+            body { padding: 0.5rem; } 
+            h1 { font-size: 1.2rem; }
+            input, button { padding: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <h1>😈 Ebony Title Gen</h1>
+    <p style="text-align: center; font-size: 0.9rem; opacity: 0.8;">Powered by Grok 3. Drop a theme for spicy Reddit titles.</p>
+    
+    <div id="api-key-section">
+        <label for="apiKey" style="display: block; margin-bottom: 0.5rem;">🔑 Grok API Key</label>
+        <input type="password" id="apiKey" placeholder="Paste here & save">
+        <button onclick="saveApiKey()">Save & Go</button>
+    </div>
+    
+    <input type="text" id="userPrompt" placeholder="e.g., intense grip challenge 😏" disabled>
+    <button id="genBtn" onclick="generateTitles()" disabled>Generate 5 Titles 🔥</button>
+    
+    <div id="results"></div>
+
+    <script>
+        let apiKey = localStorage.getItem('grokApiKey') || '';
+        const apiSection = document.getElementById('api-key-section');
+        const promptInput = document.getElementById('userPrompt');
+        const genBtn = document.getElementById('genBtn');
+
+        if (apiKey) {
+            apiSection.style.display = 'none';
+            promptInput.disabled = false;
+            genBtn.disabled = false;
+        }
+
+        function saveApiKey() {
+            const key = document.getElementById('apiKey').value.trim();
+            if (key) {
+                apiKey = key;
+                localStorage.setItem('grokApiKey', key);
+                apiSection.style.display = 'none';
+                promptInput.disabled = false;
+                genBtn.disabled = false;
+                promptInput.focus();
+            } else {
+                alert('Enter your key first!');
+            }
+        }
+
+        async function generateTitles() {
+            const prompt = promptInput.value.trim();
+            if (!prompt) return alert('Gimme a theme!');
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="loading">🔄 Spinning up some heat...</div>';
+            genBtn.disabled = true;
+            genBtn.textContent = 'Generating...';
+
+            try {
+                const response = await fetch('https://api.x.ai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'grok-3',  // Locked to free Grok 3
+                        messages: [
+                            {
+                                role: 'system',
+                                content: 'You are a title generator. Output EXACTLY 5 short, explicit, teasing Reddit post titles for r/explicitebony. Ebony theme only. Each title on its OWN LINE. NO numbers, no bullets, no intro text, no extras. Emoji-heavy (😈🍆👀💋💦🔥). Suggestive, playful, NSFW. Examples: she is trying but couldn\'t handle 😈🍆\nlook at recoil holy 👀💋😈\nBased strictly on the user prompt.'
+                            },
+                            { role: 'user', content: prompt }
+                        ],
+                        max_tokens: 250,
+                        temperature: 0.9  // Extra spicy creativity
+                    })
+                });
+
+                if (!response.ok) throw new Error(`API says no: ${response.status} ${response.statusText}`);
+
+                const data = await response.json();
+                let rawContent = data.choices[0].message.content.trim();
+                
+                // Better parsing: Split on newlines, clean up extras
+                let titles = rawContent.split('\n')
+                    .map(t => t.trim())
+                    .filter(t => t.length > 0 && !/^\d+\./.test(t) && !/^- /.test(t))  // Skip numbers/bullets
+                    .slice(0, 5);
+                
+                // Fallback: If fewer than 5, split on periods or just use raw if it's a list
+                if (titles.length < 1 && rawContent.includes('.')) {
+                    titles = rawContent.split('.').map(t => t.trim()).filter(t => t.length > 0).slice(0, 5);
+                }
+                if (titles.length < 1) {
+                    titles = [rawContent];  // Last resort: Show raw
+                }
+                
+                // Debug: Log to console for you
+                console.log('Raw Grok output:', rawContent);
+                console.log('Parsed titles:', titles);
+
+                resultsDiv.innerHTML = titles.map((title, i) => `
+                    <div class="title">
+                        <span class="title-text">${title}</span>
+                        <button class="copy-btn" onclick="copyTitle('${title.replace(/'/g, "\\'").replace(/"/g, '\\"')}')">📋</button>
+                    </div>
+                `).join('');
+
+                promptInput.value = '';  // Clear for next round
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="error">Oops: ${error.message}. Double-check key? 😕</p>`;
+                console.error('Full error:', error);  // For debugging
+            } finally {
+                genBtn.disabled = false;
+                genBtn.textContent = 'Regenerate 🔥';
+            }
+        }
+
+        function copyTitle(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                const orig = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = orig, 1500);
+            }).catch(err => alert('Copy failed: ' + err));
+        }
+
+        // Mobile: Auto-focus on load if key set
+        if (apiKey) promptInput.focus();
+    </script>
+</body>
+</html>
