@@ -4,91 +4,166 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>😈 Ebony Title Gen</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0f0f12;
-  --panel: #1b1b20;
-  --card: #22222a;
-  --accent: #ff6b6b;
-  --accent-2: #ff8787;
-  --green: #4caf50;
-  --text: #ffffff;
-  --muted: rgba(255,255,255,0.65);
+  --bg: #0c0b10;
+  --panel: #16151d;
+  --card: #1e1d28;
+  --accent: #ff5c5c;
+  --accent-glow: rgba(255, 92, 92, 0.25);
+  --accent-2: #ff7a7a;
+  --green: #5ddb6a;
+  --green-bg: #1a2e1c;
+  --text: #f0eff4;
+  --muted: rgba(240,239,244,0.55);
+  --border: rgba(255,255,255,0.06);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: radial-gradient(1200px 600px at top, #1a1a22, var(--bg));
+  font-family: 'Outfit', -apple-system, sans-serif;
+  background: var(--bg);
   color: var(--text);
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  padding: 1.5rem 1rem;
+  padding: 2rem 1rem 3rem;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(255,92,92,0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .app {
   width: 100%;
-  max-width: 500px;
+  max-width: 480px;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.1rem;
+  position: relative;
+  z-index: 1;
 }
 
-h1 { text-align: center; font-size: 1.6rem; }
-.subtitle { text-align: center; font-size: 0.88rem; color: var(--muted); margin-top: -0.5rem; }
+.logo {
+  text-align: center;
+  padding: 0.5rem 0 0.2rem;
+}
+.logo h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--accent), #ff9a6c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.logo p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 0.15rem;
+  font-weight: 400;
+}
 
 .panel {
   background: var(--panel);
-  padding: 1.1rem;
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  padding: 1.25rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.7rem;
 }
 
-.panel label { font-size: 0.85rem; color: var(--muted); }
+.panel label {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.panel label span {
+  text-transform: none;
+  font-weight: 400;
+  opacity: 0.7;
+}
 
 .key-row { display: flex; gap: 0.5rem; }
 .key-row input { flex: 1; }
 
-input {
+input, select {
   width: 100%;
-  padding: 0.85rem 1rem;
+  padding: 0.8rem 1rem;
   border-radius: 12px;
-  border: 1.5px solid transparent;
-  font-size: 1rem;
-  background: #2a2a33;
+  border: 1.5px solid var(--border);
+  font-size: 0.95rem;
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(255,255,255,0.04);
   color: var(--text);
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-input:focus { outline: none; border-color: var(--accent); }
+input::placeholder { color: var(--muted); font-family: 'Outfit', sans-serif; }
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+select {
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  padding-right: 2.2rem;
+}
 
 .primary-btn {
-  padding: 0.85rem 1.2rem;
+  padding: 0.85rem 1.3rem;
   border-radius: 12px;
   border: none;
-  font-size: 1rem;
+  font-size: 0.95rem;
+  font-family: 'Outfit', sans-serif;
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
   color: #fff;
   font-weight: 700;
   cursor: pointer;
-  transition: opacity 0.2s, transform 0.1s;
+  transition: opacity 0.2s, transform 0.08s;
   white-space: nowrap;
+  letter-spacing: 0.01em;
+  position: relative;
+  overflow: hidden;
+}
+.primary-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.12) 100%);
+  pointer-events: none;
 }
 .primary-btn.full { width: 100%; }
-.primary-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.primary-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 .primary-btn:not(:disabled):active { transform: scale(0.97); }
 
 .key-status {
   font-size: 0.8rem;
-  padding: 0.3rem 0.6rem;
+  padding: 0.35rem 0.7rem;
   border-radius: 8px;
   display: none;
+  font-weight: 500;
 }
-.key-status.error { background: #2e1a1a; color: var(--accent); display: block; }
+.key-status.error { background: rgba(255,92,92,0.12); color: var(--accent); display: block; }
 
 .reset-key {
   font-size: 0.78rem;
@@ -96,79 +171,142 @@ input:focus { outline: none; border-color: var(--accent); }
   background: none;
   border: none;
   cursor: pointer;
-  text-decoration: underline;
   text-align: right;
   padding: 0;
+  font-family: 'Outfit', sans-serif;
+  transition: color 0.2s;
 }
 .reset-key:hover { color: var(--text); }
 
-.count-row { display: flex; align-items: center; gap: 0.75rem; }
-.count-row label { white-space: nowrap; font-size: 0.85rem; color: var(--muted); }
-
-select {
-  background: #2a2a33;
-  color: var(--text);
-  border: 1.5px solid transparent;
-  border-radius: 10px;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.95rem;
-  cursor: pointer;
-}
-select:focus { outline: none; border-color: var(--accent); }
-
-#results { display: flex; flex-direction: column; gap: 0.75rem; }
-
-.title-card {
-  background: var(--card);
-  padding: 0.9rem 1rem;
-  border-radius: 14px;
-  border-left: 4px solid var(--accent);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+.count-row {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  animation: fadeIn 0.3s ease;
+}
+.count-row label {
+  white-space: nowrap;
+  text-transform: none;
+  font-weight: 500;
+}
+.count-row select { width: auto; }
+
+#results { display: flex; flex-direction: column; gap: 0.65rem; }
+
+.title-card {
+  background: var(--card);
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  border-left: 3px solid var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  animation: cardIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.title-num { font-size: 0.7rem; color: var(--accent); font-weight: 700; min-width: 1.2rem; text-align: center; }
-.title-text { flex: 1; font-size: 1rem; line-height: 1.45; word-break: break-word; }
+.title-card:nth-child(1) { animation-delay: 0s; }
+.title-card:nth-child(2) { animation-delay: 0.06s; }
+.title-card:nth-child(3) { animation-delay: 0.12s; }
+.title-card:nth-child(4) { animation-delay: 0.15s; }
+.title-card:nth-child(5) { animation-delay: 0.18s; }
+.title-card:nth-child(6) { animation-delay: 0.21s; }
+.title-card:nth-child(7) { animation-delay: 0.24s; }
+.title-card:nth-child(8) { animation-delay: 0.27s; }
+.title-card:nth-child(9) { animation-delay: 0.30s; }
+.title-card:nth-child(10) { animation-delay: 0.33s; }
+
+.title-num {
+  font-size: 0.65rem;
+  color: var(--accent);
+  font-weight: 800;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: rgba(255,92,92,0.1);
+  flex-shrink: 0;
+}
+.title-text {
+  flex: 1;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  word-break: break-word;
+  font-weight: 400;
+}
 
 .copy-btn {
-  background: #2e3d2e;
+  background: var(--green-bg);
   color: var(--green);
   border-radius: 10px;
-  padding: 0.45rem 0.65rem;
-  font-size: 1rem;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.9rem;
   border: none;
-  min-width: 42px;
-  min-height: 42px;
+  min-width: 40px;
+  min-height: 40px;
   flex-shrink: 0;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.15s, transform 0.08s;
 }
-.copy-btn:hover { background: #3a4e3a; }
-.copy-btn:active { transform: scale(0.93); }
+.copy-btn:hover { background: #253a27; }
+.copy-btn:active { transform: scale(0.92); }
 
-.loading { text-align: center; font-style: italic; color: var(--muted); padding: 1rem; }
-.error-box { background: #2a1a1a; border-radius: 12px; padding: 1rem; color: var(--accent); text-align: center; font-size: 0.9rem; }
+.loading {
+  text-align: center;
+  color: var(--muted);
+  padding: 1.5rem;
+  font-size: 0.9rem;
+}
+.loading-dots::after {
+  content: '';
+  animation: dots 1.2s steps(4,end) infinite;
+}
+@keyframes dots {
+  0%  { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+}
+
+.error-box {
+  background: rgba(255,92,92,0.08);
+  border: 1px solid rgba(255,92,92,0.15);
+  border-radius: 14px;
+  padding: 1rem;
+  color: var(--accent);
+  text-align: center;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.method-note {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-align: center;
+  opacity: 0.6;
+  line-height: 1.5;
+}
 </style>
 </head>
 
 <body>
 <div class="app">
-  <h1>😈 Ebony Title Gen</h1>
-  <p class="subtitle">Powered by Grok · Drop a theme for spicy Reddit titles</p>
+  <div class="logo">
+    <h1>😈 Ebony Title Gen</h1>
+    <p>Powered by Grok · Drop a theme for spicy titles</p>
+  </div>
 
   <!-- API Key Panel -->
   <div class="panel" id="keyPanel">
-    <label>🔑 Grok API Key <span style="font-size:0.75rem">(saved in your browser, never uploaded)</span></label>
+    <label>🔑 Grok API Key <span>(stays on your device)</span></label>
     <div class="key-row">
       <input type="password" id="apiKeyInput" placeholder="xai-..." autocomplete="off" />
       <button class="primary-btn" onclick="saveApiKey()">Save</button>
@@ -176,7 +314,7 @@ select:focus { outline: none; border-color: var(--accent); }
     <div id="keyStatus" class="key-status"></div>
   </div>
 
-  <!-- Prompt Panel (hidden until key saved) -->
+  <!-- Prompt Panel -->
   <div class="panel" id="promptPanel" style="display:none">
     <label>🎯 Theme / Vibe</label>
     <input type="text" id="userPrompt" placeholder="e.g., intense grip challenge 😏" />
@@ -190,15 +328,16 @@ select:focus { outline: none; border-color: var(--accent); }
       </select>
     </div>
     <button class="primary-btn full" id="genBtn" onclick="generateTitles()">Generate Titles 🔥</button>
-    <button class="reset-key" onclick="resetKey()">🔁 Change API key</button>
+    <button class="reset-key" onclick="resetKey()">Change API key</button>
   </div>
 
   <div id="results"></div>
+  <p class="method-note" id="methodNote"></p>
 </div>
 
 <script>
-const STORAGE_KEY = 'grokApiKey_v2';
-let apiKey = localStorage.getItem(STORAGE_KEY) || '';
+/* ---------- state (in-memory, no localStorage) ---------- */
+let apiKey = '';
 
 const keyPanel    = document.getElementById('keyPanel');
 const promptPanel = document.getElementById('promptPanel');
@@ -206,8 +345,10 @@ const apiKeyInput = document.getElementById('apiKeyInput');
 const keyStatus   = document.getElementById('keyStatus');
 const genBtn      = document.getElementById('genBtn');
 const promptInput = document.getElementById('userPrompt');
+const methodNote  = document.getElementById('methodNote');
 
-// Skip key entry if already saved
+/* also try reading from localStorage in case user is running locally */
+try { apiKey = localStorage.getItem('grokApiKey_v2') || ''; } catch(e) {}
 if (apiKey) showReady();
 
 apiKeyInput.addEventListener('keydown', e => { if (e.key === 'Enter') saveApiKey(); });
@@ -218,7 +359,7 @@ function saveApiKey() {
   if (!val) { showKeyError('Paste your key first!'); return; }
   if (!val.startsWith('xai-')) { showKeyError('Grok keys start with xai-'); return; }
   apiKey = val;
-  localStorage.setItem(STORAGE_KEY, val);
+  try { localStorage.setItem('grokApiKey_v2', val); } catch(e) {}
   showReady();
 }
 
@@ -234,16 +375,54 @@ function showKeyError(msg) {
 }
 
 function resetKey() {
-  localStorage.removeItem(STORAGE_KEY);
+  try { localStorage.removeItem('grokApiKey_v2'); } catch(e) {}
   apiKey = '';
   apiKeyInput.value = '';
   keyStatus.className = 'key-status';
   promptPanel.style.display = 'none';
   keyPanel.style.display = 'flex';
   document.getElementById('results').innerHTML = '';
+  methodNote.textContent = '';
   apiKeyInput.focus();
 }
 
+/* ---------- CORS-safe fetch with fallback ---------- */
+const API_DIRECT = 'https://api.x.ai/v1/chat/completions';
+const PROXIES = [
+  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+];
+
+async function safeFetch(body) {
+  const headers = {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json'
+  };
+
+  /* 1) try direct */
+  try {
+    const res = await fetch(API_DIRECT, { method: 'POST', headers, body });
+    if (res.ok || res.status === 401) {
+      methodNote.textContent = '';
+      return res;
+    }
+  } catch (_) { /* CORS or network — fall through */ }
+
+  /* 2) try each proxy */
+  for (const mkUrl of PROXIES) {
+    try {
+      const res = await fetch(mkUrl(API_DIRECT), { method: 'POST', headers, body });
+      if (res.ok || res.status === 401) {
+        methodNote.textContent = 'Routed via CORS proxy';
+        return res;
+      }
+    } catch (_) { /* next proxy */ }
+  }
+
+  throw new Error('Could not reach the Grok API. Check your network or try again in a moment.');
+}
+
+/* ---------- generate ---------- */
 async function generateTitles() {
   const prompt = promptInput.value.trim();
   if (!prompt) { promptInput.focus(); return; }
@@ -251,34 +430,47 @@ async function generateTitles() {
   const count = parseInt(document.getElementById('titleCount').value);
   const results = document.getElementById('results');
 
-  results.innerHTML = '<div class="loading">🔄 Cooking up the heat...</div>';
+  results.innerHTML = '<div class="loading">🔥 Cooking up the heat<span class="loading-dots"></span></div>';
   genBtn.disabled = true;
   genBtn.textContent = 'Generating...';
 
   try {
-    const res = await fetch('https://api.x.ai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'grok-3',
-        messages: [
-          {
-            role: 'system',
-            content: `You generate explicit, teasing Reddit-style post titles with an Ebony theme. Output EXACTLY ${count} titles, one per line, no numbering, no intro text. Use emojis liberally 😈🍆👀💋💦🔥.`
-          },
-          { role: 'user', content: prompt }
-        ],
-        temperature: 1.0,
-        max_tokens: 400
-      })
+    const payload = JSON.stringify({
+      model: 'grok-3',
+      messages: [
+        {
+          role: 'system',
+          content: `Generate Reddit-style hype titles describing a girl in a video.
+The titles should sound like a viewer reacting to or hyping the girl, NOT like the girl speaking.
+Rules:
+- NEVER use first-person words like "I", "me", or "my".
+- Write from a viewer perspective describing what the girl is doing.
+- Sound like casual Reddit captions.
+- Use natural Reddit language like: bro, nah, this girl, ain't no way, wild, crazy, she different.
+- Focus on how impressive, wild, or surprising the moment in the video is.
+- Keep the tone playful, hype, and reaction-based.
+Style examples:
+- "bro this girl is wild 😭"
+- "nah she really did that"
+- "this girl different fr"
+- "ain't no way she just did that 💀"
+- "bro how is she that confident"
+Output EXACTLY ${count} titles.
+One title per line.
+No numbering.
+Use a few emojis like 😭😮‍🔥👀🔥 when it fits naturally.`
+        },
+        { role: 'user', content: prompt }
+      ],
+      temperature: 1.0,
+      max_tokens: 400
     });
+
+    const res = await safeFetch(payload);
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      if (res.status === 401) { resetKey(); throw new Error('Invalid API key — please re-enter it.'); }
+      if (res.status === 401) { resetKey(); throw new Error('Invalid API key — please re-enter.'); }
       throw new Error(err?.error?.message || `API error ${res.status}`);
     }
 
@@ -309,14 +501,30 @@ async function generateTitles() {
   }
 }
 
+/* ---------- copy ---------- */
 document.addEventListener('click', e => {
   const btn = e.target.closest('.copy-btn');
   if (!btn) return;
-  navigator.clipboard.writeText(decodeURIComponent(btn.dataset.t)).then(() => {
-    btn.textContent = '✅';
-    setTimeout(() => btn.textContent = '📋', 1400);
-  });
+  const text = decodeURIComponent(btn.dataset.t);
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(text).then(() => flash(btn)).catch(() => fallbackCopy(text, btn));
+  } else {
+    fallbackCopy(text, btn);
+  }
 });
+
+function fallbackCopy(text, btn) {
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); flash(btn); } catch(_) {}
+  document.body.removeChild(ta);
+}
+
+function flash(btn) {
+  btn.textContent = '✅';
+  setTimeout(() => btn.textContent = '📋', 1400);
+}
 
 function escHtml(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
